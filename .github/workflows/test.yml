@@ -44,6 +44,7 @@ env:
   DOCKER_HUB_USERNAME: qing161
   DOCKER_HUB_PASSWORD: Qingfeng,A11
   DOCKER_TAG: tagname
+  ACR_PASSWORD: Qingfeng,A11 # 从GitHub Secrets获取密码
 
 jobs:
   build-and-deploy:
@@ -64,7 +65,7 @@ jobs:
 
     - name: Login to Alibaba Cloud ACR
       run: |
-        echo ${{ secrets.ACR_PASSWORD }} | docker login -u ${{ env.ACR_REGISTRY }} --password-stdin
+        echo "${{ env.ACR_PASSWORD }}" | docker login -u aliyun5694155858 --password-stdin ${{ env.ACR_REGISTRY }}
 
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v3
