@@ -28,5 +28,5 @@ jobs:
         context: .
         file: ./Dockerfile
         platforms: linux/amd64
-        tags: your-repo/your-image-name:tag
+        tags: qing161/test1030:tagname
         push: true
