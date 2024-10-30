@@ -39,7 +39,7 @@ on:
       - main
 
 env:
-  ACR_REGISTRY: '<账号ID>.dkr.ecr.<region>.aliyuncs.com' # 替换为实际的注册地址
+  ACR_REGISTRY: '1954625374569317.dkr.ecr.crpi-fierbpua1f5su3ae.cn-zhangjiakou.personal.cr.aliyuncs.com' # 替换为实际的注册地址
   ACR_IMAGE: 'test1030' # 替换为实际的镜像名称
   DOCKER_HUB_USERNAME: qing161
   DOCKER_HUB_PASSWORD: Qingfeng,A11
