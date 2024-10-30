@@ -1,0 +1,58 @@
+# created by virtualenv automatically
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+*.so
+
+# Python virtual environment
+venv/
+
+# Third-party libraries
+lib/
+
+# Output of setup.py
+dist/
+build/
+
+# Egg information for pip
+*.egg-info/
+
+# Coverage reports
+.coverage
+coverage.xml
+.htmlcov/
+
+# Log files
+log/
+logs/
+*.log
+
+# Temporary files that might be created
+*.tmp
+
+# Local configuration (do not check in)
+.local
+.env
+
+# Flask session files
+*.session
+
+# Django
+.db
+local_settings.py
+
+# Jupyter notebook
+.ipynb_checkpoints
+
+# PyInstaller
+# Usually these directories are empty, if not they contain mostly junk
+# or duplicates of files in the ./dist directory.
+.Pyi/
+.bdist_mpkg/
+.build/
+.dist/
+.lib/

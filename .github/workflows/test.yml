@@ -1,0 +1,32 @@
+name: Build and deploy Python app to Docker
+
+on:
+  push:
+    branches:
+      - main # 或者你用来部署的分支名称
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ./Dockerfile
+        platforms: linux/amd64
+        tags: your-repo/your-image-name:tag
+        push: true
