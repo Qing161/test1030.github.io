@@ -39,11 +39,11 @@ on:
       - main
 
 env:
-  ACR_REGISTRY: '1954625374569317.dkr.ecr.crpi-fierbpua1f5su3ae.cn-zhangjiakou.personal.cr.aliyuncs.com' # 替换为实际的注册地址
-  ACR_IMAGE: 'test1030' # 替换为实际的镜像名称
-  DOCKER_HUB_USERNAME: qing161
-  DOCKER_HUB_PASSWORD: Qingfeng,A11
-  DOCKER_TAG: tagname
+  ACR_REGISTRY: 'crpi-fierbpua1f5su3ae.cn-zhangjiakou.personal.cr.aliyuncs.com' # 公网地址的前缀部分
+  ACR_IMAGE: 'islilacok/learnner' # 包含命名空间的镜像名称
+  DOCKER_HUB_USERNAME: 'qing161'
+  DOCKER_HUB_PASSWORD: 'Qingfeng,A11'
+  DOCKER_TAG: 'tagname'
   ACR_PASSWORD: Qingfeng,A11 # 从GitHub Secrets获取密码
 
 jobs:
