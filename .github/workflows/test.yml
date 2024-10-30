@@ -3,7 +3,7 @@ name: Build and deploy Python app to Docker
 on:
   push:
     branches:
-      - main # 或者你用来部署的分支名称
+      - main
 
 jobs:
   build-and-deploy:
