@@ -40,11 +40,12 @@ on:
 
 env:
   ACR_REGISTRY: 'crpi-fierbpua1f5su3ae.cn-zhangjiakou.personal.cr.aliyuncs.com' # 公网地址的前缀部分
-  ACR_IMAGE: 'islilacok/learnner' # 包含命名空间的镜像名称
+  NAMESPACE: 'islilacok' # 命名空间
+  REPO_NAME: 'learnner' # 仓库名称
   DOCKER_HUB_USERNAME: 'qing161'
-  DOCKER_HUB_PASSWORD: 'Qingfeng,A11'
+  DOCKER_HUB_PASSWORD: 'Qingfeng,A11' # Docker Hub 的密码
   DOCKER_TAG: 'tagname'
-  ACR_PASSWORD: 'q3231423581' 
+  ACR_PASSWORD: 'q3231423581' # 阿里云 ACR 的密码
 
 jobs:
   build-and-deploy:
@@ -74,6 +75,6 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64
         tags: |
-          qing161/${{ env.ACR_IMAGE }}:${{ env.DOCKER_TAG }}
-          ${{ env.ACR_REGISTRY }}/${{ env.ACR_IMAGE }}:${{ env.DOCKER_TAG }}
+          qing161/${{ env.NAMESPACE }}/${{ env.REPO_NAME }}:${{ env.DOCKER_TAG }}
+          ${{ env.ACR_REGISTRY }}/${{ env.NAMESPACE }}/${{ env.REPO_NAME }}:${{ env.DOCKER_TAG }}
         push: true
