@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-import MySQLdb # pip install mysql-connector-python #import mysql.connector
-import pandas as pd # pip install pandas -i https://pypi.tuna.tsinghua.edu.cn/simple
+import mysql.connector  # 使用 mysql-connector-python 替换 MySQLdb
+import pandas as pd  # pip install pandas -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 确保设置了密钥
@@ -20,7 +20,7 @@ def submit():
         flash('数据库名只能包括字母、数字和下划线。')
         return redirect(url_for('index'))
     try:
-        conn = MySQLdb.connect(host=name, user=username, passwd=password, db=database)
+        conn = mysql.connector.connect(host=name, user=username, password=password, database=database)
         conn.close()
 
         return redirect(url_for('data', name=name, username=username, password=password, database=database))
@@ -36,8 +36,8 @@ def data():
     database = request.args.get('database')
 
     try:
-        conn = MySQLdb.connect(host=name, user=username, passwd=password, db=database)
-        with conn.cursor(MySQLdb.cursors.DictCursor) as cursor:
+        conn = mysql.connector.connect(host=name, user=username, password=password, database=database)
+        with conn.cursor(dictionary=True) as cursor:
             cursor.execute("SHOW TABLES;")
             tables = cursor.fetchall()
             table_list = [t[f'Tables_in_{database}'] for t in tables]
@@ -56,8 +56,8 @@ def table_image():
     table = request.args.get('table')
 
     try:
-        conn = MySQLdb.connect(host=name, user=username, passwd=password, db=database)
-        with conn.cursor(MySQLdb.cursors.DictCursor) as cursor:
+        conn = mysql.connector.connect(host=name, user=username, password=password, database=database)
+        with conn.cursor(dictionary=True) as cursor:
             cursor.execute(f"SELECT * FROM `{table}`;")
             results = cursor.fetchall()
             df = pd.DataFrame(results)
@@ -73,4 +73,4 @@ def table_image():
         return str(e), 500
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080)
+    app.run(host='0.0.0.0', port=8080)
