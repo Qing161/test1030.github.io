@@ -68,13 +68,22 @@ jobs:
       run: |
         echo "${{ env.ACR_PASSWORD }}" | docker login -u aliyun5694155858 --password-stdin ${{ env.ACR_REGISTRY }}
 
-    
-
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v3
       with:
         context: .
         file: ./Dockerfile
         platforms: linux/amd64
-        tags: qing161/test1030:${{ env.DOCKER_TAG }}
+        tags: |  
+          qing161/test1030:${{ env.DOCKER_TAG }} # Docker Hub  
+          ${{ env.ACR_REGISTRY }}/${{ env.NAMESPACE }}/${{ env.REPO_NAME }}:${{ env.DOCKER_TAG }} # 阿里云 ACR
         push: true
+
+#    - name: Build and Push Docker Image
+#      uses: docker/build-push-action@v3
+#      with:
+#        context: .
+#        file: ./Dockerfile
+#        platforms: linux/amd64
+#        tags: qing161/test1030:${{ env.DOCKER_TAG }}
+#        push: true
