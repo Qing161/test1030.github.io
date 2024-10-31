@@ -10,7 +10,11 @@ RUN apt-get update && \
     ca-certificates \
     curl \
     gnupg \
-    lsb-release && \
+    lsb-release \
+    python3 \
+    python3-pip \
+    python3-dev \
+    build-essential && \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
     echo \
@@ -26,10 +30,10 @@ WORKDIR /app
 COPY . .
 
 # 安装依赖
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # 设置环境变量
 ENV PYTHONUNBUFFERED=1
 
 # 将你的应用程序入口点定义在这里
-CMD ["python", "main.py"]
+CMD ["python3", "main.py"]
