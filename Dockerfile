@@ -1,7 +1,10 @@
-# 使用官方 Ubuntu 镜像作为基础
 FROM ubuntu:20.04
 
-# 安装 docker 客户端
+# 设置非交互模式和时区
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Shanghai
+
+# 安装必要的软件包
 RUN apt-get update && \
     apt-get install -y \
     ca-certificates \
@@ -18,8 +21,6 @@ RUN apt-get update && \
 
 # 设置工作目录
 WORKDIR /app
-
-# 其他自定义设置...
 
 # 复制当前目录的内容到容器内的/app目录下
 COPY . .
