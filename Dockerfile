@@ -1,39 +1,35 @@
-FROM ubuntu:20.04
+FROM docker.io/docker:dind
 
-# 设置非交互模式和时区
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Asia/Shanghai
+#使用 ali 仓库地址
+RUN echo -e "http://mirrors.aliyun.com/alpine/latest-stable/main\n\
+http://mirrors.aliyun.com/alpine/latest-stable/community" > /etc/apk/repositories
 
-# 安装必要的软件包
-RUN apt-get update && \
-    apt-get install -y \
-    ca-certificates \
-    curl \
-    gnupg \
-    lsb-release \
-    python3 \
-    python3-pip \
-    python3-dev \
-    build-essential && \
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
-    echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
-    apt-get update && \
-    apt-get install -y docker-ce docker-ce-cli containerd.io
+#增加不安全链接地址，本地注册中心地址。
+RUN mkdir -p /etc/docker && echo -e '{"insecure-registries": ["hub.local.ip:port"]}' > /etc/docker/daemon.json
 
-# 设置工作目录
-WORKDIR /app
+RUN apk update && apk add tzdata vim openjdk8 libstdc++ curl ca-certificates bash && \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    echo "Asia/Shanghai" > /etc/timezone && \
+    rm -rf /root/.cache
 
-# 复制当前目录的内容到容器内的/app目录下
-COPY . .
+#设置环境变量
+ENV JAVA_HOME /usr/lib/jvm/default-jvm
+ENV PATH $PATH:$JAVA_HOME/jre/bin:$JAVA_HOME/bin
+#安装字体 Jenkins 需要，git，ssh，修改root主目录
+RUN apk update && apk add ttf-dejavu git openssh && \
+    sed -i -e 's/root:\/root/root:\/var\/jenkins_home/g' /etc/passwd
 
-# 安装依赖
-RUN pip3 install --no-cache-dir -r requirements.txt
+#设置jenkins 主目录
+ENV JENKINS_HOME /var/jenkins_home
+#设置maven目录
+ENV MAVEN_HOME /var/jenkins_home/tools/maven3
+ENV PATH $PATH:$MAVEN_HOME/bin
+WORKDIR /var/jenkins_home
 
-# 设置环境变量
-ENV PYTHONUNBUFFERED=1
+#添加启动脚本和 war 文件从Jenkins 下载。
+ADD jenkins_run.sh /jenkins_run.sh
+ADD jenkins.war /usr/share/jenkins/jenkins.war
 
-# 将你的应用程序入口点定义在这里
-CMD ["python3", "main.py"]
+EXPOSE 8080
+
+ENTRYPOINT ["/jenkins_run.sh"]
