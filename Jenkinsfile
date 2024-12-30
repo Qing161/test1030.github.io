@@ -8,7 +8,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                
+            
                     git branch: 'dev', url: 'https://github.com/NUC-TCM/web.home.tcm', credentialsId: env.GIT_CREDENTIALS_ID
                     
                     def tagName = sh(returnStdout: true, script: 'git describe --tags --abbrev=0').trim()
