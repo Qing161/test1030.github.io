@@ -4,7 +4,6 @@ pipeline {
     environment {
         GIT_CREDENTIALS_ID = 'github-qing161'
     }
-
     stages {
         stage('Checkout') {
             steps {
