@@ -15,7 +15,7 @@ pipeline {
                     echo "Latest tag is ${tagName}"
 
                     env.LATEST_TAG = tagName
-                    
+                
                 }
             }
         }
