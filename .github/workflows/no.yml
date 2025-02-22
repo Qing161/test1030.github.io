@@ -28,7 +28,7 @@ jobs:
 
     - name: Configure kubectl
       run: |
-        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+        echo "${{ secrets.k8s }}" > ~/.kube/config
 
     - name: Deploy application
       run: |
