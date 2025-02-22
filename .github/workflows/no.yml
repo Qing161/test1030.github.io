@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions-hub/kubectl@master
-      - uses: azure/k8s-cli@v2
+        uses: actions/checkout@v3
+      - uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }} #ddd
         with:
