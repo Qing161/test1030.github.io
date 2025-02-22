@@ -14,6 +14,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Test base64 decode
+        run: |
+          echo "Testing base64 decode..."
+          if echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > /dev/null; then
+            echo "Base64 decode successful"
+          else
+            echo "Base64 decode failed"
+            exit 1
+          fi
       
       # 设置 Kubernetes 配置
       - name: Set up Kubernetes config
