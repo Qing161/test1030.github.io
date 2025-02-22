@@ -25,6 +25,8 @@ jobs:
       uses: azure/setup-kubectl@v1
       with:
         version: 'v1.20.0'  # 根据需要指定kubectl的版本
+    - name: Create kubeconfig directory  
+      run: mkdir -p ~/.kube  # 创建 .kube 目录 
 
     - name: Configure kubectl
       run: |
