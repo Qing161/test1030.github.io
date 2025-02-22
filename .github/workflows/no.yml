@@ -19,7 +19,8 @@ jobs:
       - name: Set up Kubernetes config
         run: |
           mkdir -p ~/.kube
-          echo '${{ secrets.KUBE_CONFIG_DATA }}' | base64 --decode > ~/.kube/config
+          echo '${{ secrets.k8s }}' | base64 --decode > ~/.kube/config
+      
 
       # 使用解码后的 kubeconfig 文件来运行 kubectl 命令
       - name: Deploy to Kubernetes
