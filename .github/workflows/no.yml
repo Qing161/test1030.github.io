@@ -16,8 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }} #ddd
+      - name: Set up Kubernetes config
+        run: echo '${{ secrets.k8s }}' | base64 --decode > ~/.kube/config
+
       - name: Verify Kubernetes connection
         run: kubectl get pods --all-namespaces
         
