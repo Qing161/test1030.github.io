@@ -10,17 +10,19 @@ env:
 
 jobs:
   deploy:
- 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions-hub/kubectl@master
+      
+      # 设置 Kubernetes 配置
       - name: Set up Kubernetes config
         run: echo '${{ secrets.KUBE_CONFIG_DATA }}' | base64 --decode > ~/.kube/config
-
+      
+      # 使用解码后的 kubeconfig 文件来运行 kubectl 命令
       - name: Deploy to Kubernetes
         uses: actions-hub/kubectl@master
         with:
           args: get pods
-          KUBE_CONFIG: ~/.kube/config
+        env:
+          KUBECONFIG: ~/.kube/config  # 注意：这里使用的是 KUBECONFIG 而不是 KUBE_CONFIG
