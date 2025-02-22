@@ -17,6 +17,9 @@ jobs:
 
     - name: Set date as environment variable
       run: echo "DATETIME=$(date +"%Y%m%d")" >> $GITHUB_ENV
+      
+    - name: Output a message  
+      run: echo ${{env.DATETIME}} 
     
     - name: Set up kubectl
       uses: azure/setup-kubectl@v1
