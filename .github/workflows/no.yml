@@ -17,12 +17,14 @@ jobs:
       
       # 设置 Kubernetes 配置
       - name: Set up Kubernetes config
-        run: echo '${{ secrets.KUBE_CONFIG_DATA }}' | base64 --decode > ~/.kube/config
-      
+        run: |
+          mkdir -p ~/.kube
+          echo '${{ secrets.KUBE_CONFIG_DATA }}' | base64 --decode > ~/.kube/config
+
       # 使用解码后的 kubeconfig 文件来运行 kubectl 命令
       - name: Deploy to Kubernetes
         uses: actions-hub/kubectl@master
         with:
           args: get pods
         env:
-          KUBECONFIG: ~/.kube/config  # 注意：这里使用的是 KUBECONFIG 而不是 KUBE_CONFIG
+          KUBECONFIG: ~/.kube/config
