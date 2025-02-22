@@ -9,30 +9,14 @@ env:
   APP_NAME: service.doctor.tcm
 
 jobs:
-  build:
+  deploy:
+ 
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set date as environment variable
-      run: echo "DATETIME=$(date +"%Y%m%d")" >> $GITHUB_ENV
-      
-    - name: Output a message  
-      run: echo ${{env.DATETIME}} 
-    
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v1
-      with:
-        version: 'v1.20.0'  # 根据需要指定kubectl的版本
-    - name: Create kubeconfig directory  
-      run: mkdir -p ~/.kube  # 创建 .kube 目录 
-
-    - name: Configure kubectl
-      run: |
-        echo "${{ secrets.k8s }}" > ~/.kube/config
-
-    - name: Deploy application
-      run: |
-        #kubectl set image deployment/your-deployment your-container=${{env.APP_NAME}}:${{github.event.release.tag_name}}_${{env.DATETIME}}
-        kubectl get pods
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: azure/k8s-cli@v2
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }} #ddd
+        with:
+          args: set image deployment/my-deployment my-container=${{ vars.DOCKERHUB_REGISTRY }}/${{vars.DOCKERHUB_NAMESPACE}}/${{env.APP_NAME}}:${{github.event.release.tag_name}}_${{env.DATETIME}}
