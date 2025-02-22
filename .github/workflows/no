@@ -1,0 +1,31 @@
+name: kubernetes CI
+
+on:
+  release:
+    types: [published]
+
+env:
+  APP_NAME: service.doctor.tcm
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set date as environment variable
+      run: echo "DATETIME=$(date +"%Y%m%d")" >> $GITHUB_ENV
+    
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'v1.20.0'  # 根据需要指定kubectl的版本
+
+    - name: Configure kubectl
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+
+    - name: Deploy application
+      run: |
+        kubectl set image deployment/your-deployment your-container=${{env.APP_NAME}}:${{github.event.release.tag_name}}_${{env.DATETIME}}
