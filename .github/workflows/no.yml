@@ -12,7 +12,7 @@ jobs:
 
     - name: Set up KUBECONFIG
       run: |
-        echo "KUBECONFIG=$(pwd)/.k8s/kubeconfig" >> $GITHUB_ENV
+        echo "KUBECONFIG=$(pwd)/.kube/config" >> $GITHUB_ENV
 
     - name: Verify connection to Kubernetes cluster
       run: kubectl get nodes
