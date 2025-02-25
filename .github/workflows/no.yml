@@ -1,41 +1,18 @@
-name: kubernetes CI
+name: Deploy to ACK
 
-on:
-  push:
-    branches:
-      - main
-
-env:
-  APP_NAME: service.doctor.tcm
+on: [push]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Test base64 decode
-        run: |
-          echo "Testing base64 decode..."
-          if echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > /dev/null; then
-            echo "Base64 decode successful"
-          else
-            echo "Base64 decode failed"
-            exit 1
-          fi
-      
-      # 设置 Kubernetes 配置
-      - name: Set up Kubernetes config
-        run: |
-          mkdir -p ~/.kube
-          echo '${{ secrets.k8s }}' | base64 --decode > ~/.kube/config
-      
+    - name: Set up KUBECONFIG
+      run: |
+        echo "KUBECONFIG=$(pwd)/.k8s/kubeconfig" >> $GITHUB_ENV
 
-      # 使用解码后的 kubeconfig 文件来运行 kubectl 命令
-      - name: Deploy to Kubernetes
-        uses: actions-hub/kubectl@master
-        with:
-          args: "kubectl get pods"
-        env:
-          KUBECONFIG: ~/.kube/config
+    - name: Verify connection to Kubernetes cluster
+      run: kubectl get nodes
