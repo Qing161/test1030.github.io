@@ -1,19 +1,22 @@
-name: Deploy to ACK
+name: Docker Login  
 
-on: [push]
+on:  
+  push:  
+    branches:  
+      - main  
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set date as environment variable
-      run: echo "DATETIME=$(date +"%Y%m%d")" >> $GITHUB_ENV
-    - name: Docker login
-      uses: docker/login-action@v1
-      with:
-        username: 18834576853
-        password: q3231423581
-        registry: crpi-fierbpua1f5su3ae.cn-zhangjiakou.personal.cr.aliyuncs.com
-        logout: true
-   
+jobs:  
+  login:  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Checkout code  
+        uses: actions/checkout@v2  
+
+      - name: Log in to Docker Registry  
+        uses: docker/login-action@v2  
+        with:  
+          registry: crpi-fierbpua1f5su3ae.cn-zhangjiakou.personal.cr.aliyuncs.com  
+          username: ${{ secrets.DOCKER_USERNAME }}  
+          password: ${{ secrets.DOCKER_PASSWORD }}  
+
+      # 在这里添加其他步骤  
