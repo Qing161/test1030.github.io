@@ -3,16 +3,17 @@ name: Deploy to ACK
 on: [push]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Set up KUBECONFIG
-      run: |
-        echo "KUBECONFIG=$(pwd)/.kube/config" >> $GITHUB_ENV
-
-    - name: Verify connection to Kubernetes cluster
-      run: kubectl get nodes
+    - uses: actions/checkout@v3
+    - name: Set date as environment variable
+      run: echo "DATETIME=$(date +"%Y%m%d")" >> $GITHUB_ENV
+    - name: Docker login
+      uses: docker/login-action@v1
+      with:
+        username: 18834576853
+        password: Qingfeng,A11
+        registry: crpi-fierbpua1f5su3ae.cn-zhangjiakou.personal.cr.aliyuncs.com
+        logout: true
+   
